@@ -16,6 +16,7 @@ const firebaseApp = firebase.initializeApp({
   storageBucket: "food-delivery-f8fe1.appspot.com",
   messagingSenderId: "453622329220",
   appId: "1:453622329220:web:ca118c3225633b824337d1",
+  databaseURL: "https://food-delivery-f8fe1.firebaseio.com",
 });
 
 export const firebaseAppAuth = firebaseApp.auth();
