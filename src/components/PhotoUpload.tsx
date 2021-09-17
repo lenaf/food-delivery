@@ -14,7 +14,6 @@ interface IProps {
 const PhotoUpload: React.FC<IProps> = ({ photoId, onUpload }) => {
   const { url, loading: photoLoading } = useGetPhotoUrl(photoId ?? "");
   const [loading, setLoading] = useState(false);
-  console.log(photoLoading, loading);
   return (
     <Upload
       name="avatar"
@@ -23,7 +22,6 @@ const PhotoUpload: React.FC<IProps> = ({ photoId, onUpload }) => {
       showUploadList={false}
       onChange={(info) => {
         if (info.file.originFileObj) {
-          console.log("here");
           setLoading(true);
           firebase
             .storage()
@@ -37,11 +35,13 @@ const PhotoUpload: React.FC<IProps> = ({ photoId, onUpload }) => {
         }
       }}
     >
-      {url ? (
+      {loading || photoLoading ? (
+        <LoadingOutlined />
+      ) : url ? (
         <img src={url} alt="avatar" style={{ width: "100%" }} />
       ) : (
         <div>
-          {loading || photoLoading ? <LoadingOutlined /> : <PlusOutlined />}
+          <PlusOutlined />
           <div style={{ marginTop: 8 }}>Upload</div>
         </div>
       )}

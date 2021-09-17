@@ -21,7 +21,7 @@ const EditRestaurant: React.FC<IProps> = ({ restaurant, onClose }) => {
       }}
     >
       <RestaurantInputs
-        restaurant={restaurant}
+        restaurant={editedRestaurant}
         updateRestaurant={(r) => setEditedRestuarant(r as IRestaurant)}
       />
 
@@ -38,7 +38,7 @@ const EditRestaurant: React.FC<IProps> = ({ restaurant, onClose }) => {
         </Button>
         <Button
           htmlType="submit"
-          disabled={!restaurant.name || !restaurant.ownerId}
+          disabled={!restaurant.name}
           type="primary"
           className="mb-2"
         >

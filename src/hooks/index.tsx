@@ -47,12 +47,11 @@ export const useAddRestaurant = () => (newRestaurant: IRestaurantInput) =>
     .add({ ...newRestaurant });
 
 export const useEditRestaurant = () => (restaurant: IRestaurant) =>
-  firebase.firestore().collection("restaurants").doc(restaurant.id).update({
-    description: restaurant.description,
-    name: restaurant.name,
-    ownerId: restaurant.ownerId,
-    profilePhotoId: restaurant.profilePhotoId,
-  });
+  firebase
+    .firestore()
+    .collection("restaurants")
+    .doc(restaurant.id)
+    .update(restaurant);
 
 export const useDeleteRestaurant = () => (restaurant: IRestaurant) =>
   firebase.firestore().collection("restaurants").doc(restaurant.id).delete();

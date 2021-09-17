@@ -9,7 +9,6 @@ import Restaurant from "./Restaurant";
 const LoggedIn: React.FC<{ user: firebase.User }> = ({ user }) => {
   const { restaurants, loading } = useFetchRestaurants();
   const [showNewRestaurantForm, setShowNewRestuarantForm] = useState(false);
-  console.log(restaurants);
   return (
     <div className="mx-auto" style={{ maxWidth: "400px" }}>
       <Button
