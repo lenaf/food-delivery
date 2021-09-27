@@ -5,9 +5,12 @@ import withFirebaseAuth, {
   WrappedComponentProps,
 } from "react-with-firebase-auth";
 import { Layout } from "antd";
-import LoggedIn from "./components/LoggedIn";
+import Home from "./components/Home";
+import AccountPage from "./components/AccountPage";
+import RestaurantPage from "./components/RestaurantPage";
 import TopNav from "./components/TopNav";
 import LoggedOut from "./components/LoggedOut";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 const firebaseApp = firebase.initializeApp({
   apiKey: "AIzaSyBy3Y5w0kfsAp12rfG_XXA6CHhe80TjYrg",
@@ -29,16 +32,25 @@ const App: React.ComponentType<object & WrappedComponentProps> = ({
   signOut,
   signInWithGoogle,
 }) => (
-  <div className="App">
-    <TopNav user={user} signOut={signOut} />
-    <Layout.Content className="h-screen p-8">
-      {user ? (
-        <LoggedIn user={user} />
-      ) : (
-        <LoggedOut signInWithGoogle={signInWithGoogle} />
-      )}
-    </Layout.Content>
-  </div>
+  <Router>
+    <div className="App">
+      <TopNav user={user} signOut={signOut} />
+      <Layout.Content className="h-screen p-8 bg-gray-50">
+        {user ? (
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/account" component={AccountPage} />
+            <Route
+              path="/restaurant/:restaurantId"
+              component={RestaurantPage}
+            />
+          </Switch>
+        ) : (
+          <LoggedOut signInWithGoogle={signInWithGoogle} />
+        )}
+      </Layout.Content>
+    </div>
+  </Router>
 );
 
 export default withFirebaseAuth({

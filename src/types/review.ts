@@ -9,9 +9,10 @@ export interface IReview {
     score: number;
 }
 
-export interface IRestaurantInput {
-    ownerId?: string;
-    name?: string;
-    description?: string;
-    
+export interface IReviewInput {
+    restaurantId: string;
+    reviewerId: string;
+    reviewer?: IUser;
+    text?: string;
+    score?: number;
 }

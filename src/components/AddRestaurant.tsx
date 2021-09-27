@@ -5,14 +5,12 @@ import RestaurantInputs from "./RestaurantInputs";
 import { IRestaurantInput } from "../types/restaurant";
 import { useAddRestaurant } from "../hooks";
 
-interface IProps {
-  user: firebase.User;
-  className?: string;
-}
-
-const AddRestaurant: React.FC<IProps> = ({ user, className }) => {
+const AddRestaurant: React.FC = () => {
+  let user = firebase.auth().currentUser;
   const addRestaurant = useAddRestaurant();
-  const [newRestaurant, updateNewRestaurant] = useState<IRestaurantInput>({});
+  const [newRestaurant, updateNewRestaurant] = useState<IRestaurantInput>({
+    ownerId: user?.uid,
+  });
 
   const handleAddRestaurant = () => {
     addRestaurant(newRestaurant);

@@ -6,6 +6,7 @@ export interface IRestaurant {
     profilePhotoId: string;
     photos: {id: string, text: string}[];
     averageScore: number;
+    numberOfReviews: number;
 }
 
 export interface IRestaurantInput {
