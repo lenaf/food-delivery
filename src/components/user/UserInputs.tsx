@@ -25,7 +25,7 @@ const UserInputs: React.FC<IProps> = ({ user, updateUser }) => {
         url={user.profilePhotoUrl}
         onUpload={(profilePhotoUrl) => updateUser({ ...user, profilePhotoUrl })}
       />
-      <div>What type of user are you?</div>
+      <div>Select User Type</div>
       <Radio.Group
         onChange={(e) => updateUser({ ...user, type: e.target.value })}
         value={user.type}

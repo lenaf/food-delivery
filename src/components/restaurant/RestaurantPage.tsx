@@ -9,13 +9,11 @@ import DeleteRestaurantModal from "./DeleteRestaurantModal";
 import ReviewCard from "../review/ReviewCard";
 import empty from "../../images/empty.jpg";
 import { orderBy } from "lodash";
-import firebase from "firebase";
-import { useFetchUser } from "../../hooks/user";
+import { useFetchCurrentUser } from "../../hooks/user";
 import { useFetchRestaurantReviews } from "../../hooks/review";
 
 const RestaurantPage: React.FC = () => {
-  let firebaseUser = firebase.auth().currentUser;
-  const { user } = useFetchUser(firebaseUser?.uid ?? "");
+  const { user } = useFetchCurrentUser();
   let { restaurantId } = useParams<{ restaurantId: string }>();
   const { restaurant } = useFetchRestaurantById(restaurantId);
   const { reviews } = useFetchRestaurantReviews(restaurantId);
@@ -27,8 +25,10 @@ const RestaurantPage: React.FC = () => {
   const reviewsByScore = orderBy(reviews, "score", "asc");
   const lowestReview = reviewsByScore[0];
   const highestReview = reviewsByScore[reviews.length - 1];
-
   const history = useHistory();
+
+  const canEditOrDeleteRestaurant =
+    user?.isAdmin || (user?.isOwner && restaurant?.ownerId === user.id);
 
   return (
     <div>
@@ -40,14 +40,14 @@ const RestaurantPage: React.FC = () => {
       />
       <Row>
         <h3 className={"font-bold text-3xl mr-2"}>{restaurant?.name}</h3>
-        {user?.type === "Admin" && (
+        {canEditOrDeleteRestaurant && (
           <Tooltip title="Edit" className="mr-2">
             <Button shape="circle" onClick={() => setShowEditRestaurant(true)}>
               <i className="fas fa-pen text-blue-500"></i>
             </Button>
           </Tooltip>
         )}
-        {user?.type === "Admin" && (
+        {canEditOrDeleteRestaurant && (
           <Tooltip title="Delete" className="mr-2">
             <Button
               shape="circle"
@@ -94,9 +94,7 @@ const RestaurantPage: React.FC = () => {
         </Button>
       </Row>
       {reviewsByDate.map((review, i) => (
-        <div key={i}>
-          <ReviewCard review={review} />
-        </div>
+        <ReviewCard key={i} review={review} />
       ))}
       {restaurant && (
         <EditRestaurantModal

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useEditRestaurant } from "../../hooks/restaurant";
-import { Form, Modal } from "antd";
+import { Modal } from "antd";
 import { IRestaurant } from "../../types/restaurant";
 import RestaurantInputs from "./RestaurantInputs";
 
@@ -16,7 +16,7 @@ const EditRestaurant: React.FC<IProps> = ({ restaurant, isOpen, onClose }) => {
   const editRestaurant = useEditRestaurant();
 
   const handleCancel = () => {
-    editRestaurant(restaurant);
+    setEditedRestuarant(restaurant);
     onClose();
   };
 
@@ -35,17 +35,10 @@ const EditRestaurant: React.FC<IProps> = ({ restaurant, isOpen, onClose }) => {
       cancelText="Cancel"
       okButtonProps={{ disabled: !editedRestaurant.name }}
     >
-      <Form
-        onFinish={() => {
-          editRestaurant(editedRestaurant);
-          onClose();
-        }}
-      >
-        <RestaurantInputs
-          restaurant={editedRestaurant}
-          updateRestaurant={(r) => setEditedRestuarant(r as IRestaurant)}
-        />
-      </Form>
+      <RestaurantInputs
+        restaurant={editedRestaurant}
+        updateRestaurant={(r) => setEditedRestuarant(r as IRestaurant)}
+      />
     </Modal>
   );
 };

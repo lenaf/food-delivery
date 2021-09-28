@@ -4,18 +4,16 @@ import { Button, Row, Col, Select, Rate } from "antd";
 import RestaurantCard from "./restaurant/RestaurantCard";
 import AddRestaurantModal from "./restaurant/AddRestaurantModal";
 import { orderBy } from "lodash";
-import firebase from "firebase";
-import { useFetchUser } from "../hooks/user";
+import { useFetchCurrentUser } from "../hooks/user";
 
 const Home: React.FC = () => {
-  let firebaseUser = firebase.auth().currentUser;
-  const { user } = useFetchUser(firebaseUser?.uid ?? "");
+  const { user } = useFetchCurrentUser();
   const { restaurants } = useFetchRestaurants();
   const [showAddRestaurant, setShowAddRestaurant] = useState(false);
-  const restaurantsByReview = orderBy(restaurants, "averageScore", "desc");
-  const isAdmin = user?.type === "Admin";
-  const isOwner = user?.type === "Owner";
   const [minimumRating, setMinimumRating] = useState<number | undefined>();
+  const restaurantsFeed = orderBy(restaurants, "averageScore", "desc").filter(
+    (r) => !minimumRating || r.averageScore > minimumRating
+  );
 
   return (
     <div>
@@ -35,10 +33,10 @@ const Home: React.FC = () => {
             ))}
           </Select>
         </div>
-        {(isAdmin || isOwner) && (
+        {(user?.isAdmin || user?.isOwner) && (
           <Button
             type="primary"
-            className="mb-4 "
+            className="mb-4 mr-4"
             onClick={() => setShowAddRestaurant(true)}
           >
             Add Restaurant
@@ -50,13 +48,11 @@ const Home: React.FC = () => {
         onClose={() => setShowAddRestaurant(false)}
       />
       <Row wrap gutter={8}>
-        {restaurantsByReview
-          .filter((r) => !minimumRating || r.averageScore > minimumRating)
-          .map((r, i) => (
-            <Col xs={12} sm={8} md={6} lg={6} xl={4} key={i} className="mb-2">
-              <RestaurantCard restaurant={r} />
-            </Col>
-          ))}
+        {restaurantsFeed.map((r, i) => (
+          <Col xs={12} sm={8} md={6} lg={6} xl={4} key={i} className="mb-2">
+            <RestaurantCard restaurant={r} />
+          </Col>
+        ))}
       </Row>
     </div>
   );

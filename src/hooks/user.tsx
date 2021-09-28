@@ -2,30 +2,57 @@ import firebase from "firebase";
 import { useEffect, useState } from "react";
 import { IUser } from "../types/user";
 
-export const useFetchUser = (id: string) => {
+export const useFetchCurrentUser = () => {
+  let firebaseUser = firebase.auth().currentUser;
   const [user, setUser] = useState<IUser | undefined>();
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    if (id) {
+    if (firebaseUser?.uid) {
       setLoading(true);
       firebase
         .firestore()
         .collection("users")
-        .doc(id)
+        .doc(firebaseUser?.uid)
         .onSnapshot((snapshot) => {
           if (snapshot.exists) {
             setUser({
               id: snapshot.id,
               ...snapshot.data(),
-            } as unknown as IUser);
+              isAdmin: snapshot.data()?.type === "Admin",
+              isOwner: snapshot.data()?.type === "Owner",
+            } as IUser);
           }
           setLoading(false);
         });
     } else {
       setUser(undefined);
     }
-  }, [id]);
+  }, [firebaseUser?.uid]);
   return { user, loading };
+};
+
+export const useFetchUsers = () => {
+  const [users, setUsers] = useState<IUser[]>([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    firebase
+      .firestore()
+      .collection("users")
+      .onSnapshot((snapshot) =>
+        setUsers(
+          snapshot.docs.map(
+            (doc) =>
+              ({
+                id: doc.id,
+                ...doc.data(),
+              } as IUser)
+          )
+        )
+      );
+    setLoading(false);
+  }, []);
+  return { users, loading };
 };
 
 export const useAddUser = () => (user: IUser) =>

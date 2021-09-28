@@ -5,4 +5,6 @@ export interface IUser {
     profilePhotoUrl: string;
     type: 'Admin' | 'Owner' | 'Regular';
     isRestaurantOwner: boolean;
+    isAdmin: boolean;
+    isOwner: boolean;
 }

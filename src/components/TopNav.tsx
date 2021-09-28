@@ -30,34 +30,45 @@ const TopNav: React.FC<IProps> = ({ user, signOut }) => {
           <i className="fas fa-utensils fa-lg mr-2"></i>
           <h4 className="text-white text-2xl font-bold	">Food Finds</h4>
         </Row>
+
         {user && (
-          <Dropdown
-            trigger={["click"]}
-            className="ml-auto"
-            overlay={
-              <Menu className="w-60">
-                <Menu.Item className="flex" key="0">
-                  <Button
-                    onClick={() => history.push("/account")}
-                    className="mx-auto"
-                  >
-                    Manage Account
-                  </Button>
-                </Menu.Item>
-                <Menu.Item className="flex" key="1">
-                  <Button onClick={handleSignout} className="mx-auto">
-                    Sign out
-                  </Button>
-                </Menu.Item>
-              </Menu>
-            }
-          >
-            <Row align="middle" className="cursor-pointer ">
-              <Avatar src={user.profilePhotoUrl} className="mr-2" />
-              <h1 className="items-center text-white mr-2">{user.name}</h1>
-              <DownOutlined color="white" />
-            </Row>
-          </Dropdown>
+          <Row align="middle" className="ml-auto">
+            {user?.isAdmin && (
+              <Button
+                type="link"
+                className="mr-4 text-white"
+                onClick={() => history.push("/users")}
+              >
+                Manage Users
+              </Button>
+            )}
+            <Dropdown
+              trigger={["click"]}
+              overlay={
+                <Menu className="w-60">
+                  <Menu.Item className="flex" key="0">
+                    <Button
+                      onClick={() => history.push("/account")}
+                      className="mx-auto"
+                    >
+                      Manage Account
+                    </Button>
+                  </Menu.Item>
+                  <Menu.Item className="flex" key="1">
+                    <Button onClick={handleSignout} className="mx-auto">
+                      Sign out
+                    </Button>
+                  </Menu.Item>
+                </Menu>
+              }
+            >
+              <Row align="middle" className="cursor-pointer ">
+                <Avatar src={user.profilePhotoUrl} className="mr-2" />
+                <h1 className="items-center text-white mr-2">{user.name}</h1>
+                <DownOutlined color="white" />
+              </Row>
+            </Dropdown>
+          </Row>
         )}
         {!user && firebaseUser && (
           <Button onClick={handleSignout} className="ml-auto">

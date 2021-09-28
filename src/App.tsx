@@ -6,13 +6,15 @@ import withFirebaseAuth, {
 } from "react-with-firebase-auth";
 import { Layout, Spin } from "antd";
 import Home from "./components/Home";
+import OwnerHome from "./components/OwnerHome";
 import AccountPage from "./components/user/AccountPage";
+import UsersPage from "./components/user/UsersPage";
 import Welcome from "./components/Welcome";
 import RestaurantPage from "./components/restaurant/RestaurantPage";
 import TopNav from "./components/TopNav";
 import LoggedOut from "./components/LoggedOut";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { useFetchUser } from "./hooks/user";
+import { useFetchCurrentUser } from "./hooks/user";
 
 const firebaseApp = firebase.initializeApp({
   apiKey: "AIzaSyBy3Y5w0kfsAp12rfG_XXA6CHhe80TjYrg",
@@ -38,9 +40,7 @@ const App: React.ComponentType<object & WrappedComponentProps> = ({
   error,
   loading,
 }) => {
-  const { user, loading: fetchUserLoading } = useFetchUser(
-    firebaseUser?.uid ?? ""
-  );
+  const { user, loading: fetchUserLoading } = useFetchCurrentUser();
   return (
     <Router>
       <div className="App">
@@ -48,12 +48,17 @@ const App: React.ComponentType<object & WrappedComponentProps> = ({
         <Layout.Content className="h-screen p-8 bg-gray-50">
           {user ? (
             <Switch>
-              <Route exact path="/" component={Home} />
+              <Route
+                exact
+                path="/"
+                component={user.isOwner ? OwnerHome : Home}
+              />
               <Route path="/account" component={AccountPage} />
               <Route
                 path="/restaurant/:restaurantId"
                 component={RestaurantPage}
               />
+              {user.isAdmin && <Route path="/users" component={UsersPage} />}
             </Switch>
           ) : fetchUserLoading ? (
             <Spin />

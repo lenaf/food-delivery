@@ -2,20 +2,16 @@ import React, { useState } from "react";
 import { Card, Rate, Row, Avatar, Tooltip, Button } from "antd";
 import { IReview } from "../../types/review";
 import moment from "moment";
-import { useFetchUser } from "../../hooks/user";
-import firebase from "firebase";
+import { useFetchCurrentUser } from "../../hooks/user";
 import EditReviewModal from "./EditReviewModal";
 import DeleteReviewModal from "./DeleteReviewModal";
 import AddReplyModal from "./AddReplyModal";
 
 const ReviewCard: React.FC<{ review: IReview }> = ({ review }) => {
-  let firebaseUser = firebase.auth().currentUser;
-  const { user } = useFetchUser(firebaseUser?.uid ?? "");
+  const { user } = useFetchCurrentUser();
   const [showEditReview, setShowEditReview] = useState(false);
-  const [showReply, setShowReply] = useState(false);
   const [showDeleteReview, setShowDeleteReview] = useState(false);
-  const isAdmin = user?.type === "Admin";
-  const isOwner = user?.type === "Owner";
+  const [showReply, setShowReply] = useState(false);
 
   return (
     <div>
@@ -24,14 +20,14 @@ const ReviewCard: React.FC<{ review: IReview }> = ({ review }) => {
           <Avatar src={review.reviewer?.profilePhotoUrl} className="mr-2" />
           <h4 className="font-bold">{review.reviewer?.name ?? "Unknown"}</h4>
           <Row className="ml-auto">
-            {isAdmin && (
+            {user?.isAdmin && (
               <Tooltip title="Edit" className="mr-2">
                 <Button shape="circle" onClick={() => setShowEditReview(true)}>
                   <i className="fas fa-pen text-blue-500"></i>
                 </Button>
               </Tooltip>
             )}
-            {isAdmin && (
+            {user?.isAdmin && (
               <Tooltip title="Delete" className="mr-2">
                 <Button
                   shape="circle"
@@ -41,7 +37,7 @@ const ReviewCard: React.FC<{ review: IReview }> = ({ review }) => {
                 </Button>
               </Tooltip>
             )}
-            {isOwner && (
+            {user?.isOwner && (
               <Tooltip title="Reply" className="mr-2">
                 <Button shape="circle" onClick={() => setShowReply(true)}>
                   <i className="fas fa-reply text-blue-500"></i>

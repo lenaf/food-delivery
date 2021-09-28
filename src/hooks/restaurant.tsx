@@ -18,7 +18,7 @@ export const useFetchRestaurants = () => {
                 id: doc.id,
                 averageScore: 0,
                 ...doc.data(),
-              } as unknown as IRestaurant)
+              } as IRestaurant)
           )
         )
       );
@@ -40,11 +40,39 @@ export const useFetchRestaurantById = (id: string) => {
         setRestaurant({
           id: snapshot.id,
           ...snapshot.data(),
-        } as unknown as IRestaurant)
+        } as IRestaurant)
       );
     setLoading(false);
   }, [id]);
   return { restaurant, loading };
+};
+
+export const useFetchOwnerRestaurants = (ownerId?: string) => {
+  const [restaurants, setRestaurants] = useState<IRestaurant[]>([]);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    if (ownerId) {
+      setLoading(true);
+      firebase
+        .firestore()
+        .collection("restaurants")
+        .where("ownerId", "==", ownerId)
+        .onSnapshot((snapshot) =>
+          setRestaurants(
+            snapshot.docs.map(
+              (doc) =>
+                ({
+                  id: doc.id,
+                  averageScore: 0,
+                  ...doc.data(),
+                } as IRestaurant)
+            )
+          )
+        );
+      setLoading(false);
+    }
+  }, [ownerId]);
+  return { restaurants, loading };
 };
 
 export const useAddRestaurant = () => (newRestaurant: IRestaurantInput) =>

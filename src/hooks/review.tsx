@@ -13,14 +13,13 @@ export const useFetchRestaurantReviews = (id: string) => {
       .collection("reviews")
       .where("restaurantId", "==", id)
       .onSnapshot(async (snapshot) => {
-        const reviews = snapshot.docs.map((doc) => {
-          const review = {
-            id: doc.id,
-            ...doc.data(),
-          } as IReview;
-
-          return review;
-        });
+        const reviews = snapshot.docs.map(
+          (doc) =>
+            ({
+              id: doc.id,
+              ...doc.data(),
+            } as IReview)
+        );
         const reviewerSnapshots = await Promise.all(
           reviews.map((review) =>
             firebase
