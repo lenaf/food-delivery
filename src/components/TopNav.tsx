@@ -5,6 +5,7 @@ import { DownOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import { IUser } from "../types/user";
 import firebase from "firebase";
+import { UserOutlined } from "@ant-design/icons";
 
 interface IProps {
   user?: IUser | null;
@@ -63,7 +64,11 @@ const TopNav: React.FC<IProps> = ({ user, signOut }) => {
               }
             >
               <Row align="middle" className="cursor-pointer ">
-                <Avatar src={user.profilePhotoUrl} className="mr-2" />
+                <Avatar
+                  src={user.profilePhotoUrl}
+                  icon={<UserOutlined />}
+                  className="mr-2"
+                />
                 <h1 className="items-center text-white mr-2">{user.name}</h1>
                 <DownOutlined color="white" />
               </Row>

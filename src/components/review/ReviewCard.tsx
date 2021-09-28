@@ -6,6 +6,7 @@ import { useFetchCurrentUser } from "../../hooks/user";
 import EditReviewModal from "./EditReviewModal";
 import DeleteReviewModal from "./DeleteReviewModal";
 import AddReplyModal from "./AddReplyModal";
+import { UserOutlined } from "@ant-design/icons";
 
 const ReviewCard: React.FC<{ review: IReview; className?: string }> = ({
   review,
@@ -20,7 +21,11 @@ const ReviewCard: React.FC<{ review: IReview; className?: string }> = ({
     <>
       <Card bordered={false} className={`${className} rounded shadow-sm`}>
         <Row align="middle">
-          <Avatar src={review.reviewer?.profilePhotoUrl} className="mr-2" />
+          <Avatar
+            src={review.reviewer?.profilePhotoUrl}
+            icon={<UserOutlined />}
+            className="mr-2"
+          />
           <h4 className="font-bold">{review.reviewer?.name ?? "Unknown"}</h4>
           <Row className="ml-auto">
             {user?.isAdmin && (
