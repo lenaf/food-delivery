@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useEditReview } from "../../hooks/review";
-import { Divider, Form, Modal } from "antd";
+import { Divider, Modal } from "antd";
 import ReviewInputs from "./ReviewInputs";
 import { IReview } from "../../types/review";
 import ReviewReplyInputs from "./ReviewReplyInputs";
+import { useEffect } from "react";
 
 interface IProps {
   review: IReview;
@@ -25,6 +26,8 @@ const EditReview: React.FC<IProps> = ({ review, isOpen, onClose }) => {
     onClose();
   };
 
+  useEffect(() => setEditedReview(review), [review]);
+
   return (
     <Modal
       title="Edit Review"
@@ -33,7 +36,10 @@ const EditReview: React.FC<IProps> = ({ review, isOpen, onClose }) => {
       onCancel={handleCancel}
       okText="Save"
       cancelText="Cancel"
-      okButtonProps={{ disabled: !editedReview.score || !editedReview.date }}
+      okButtonProps={{
+        disabled:
+          !editedReview.score || !editedReview.date || !editedReview.text,
+      }}
     >
       <ReviewInputs
         review={editedReview}

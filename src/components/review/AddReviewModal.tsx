@@ -41,7 +41,9 @@ const AddReviewModal: React.FC<IProps> = ({ restaurant, isOpen, onClose }) => {
       onCancel={handleClose}
       okText="Add"
       cancelText="Cancel"
-      okButtonProps={{ disabled: !newReview.date || !newReview.score }}
+      okButtonProps={{
+        disabled: !newReview.date || !newReview.score || !newReview.text,
+      }}
     >
       <Form onFinish={handleAddReview}>
         <ReviewInputs review={newReview} updateReview={updateNewReview} />

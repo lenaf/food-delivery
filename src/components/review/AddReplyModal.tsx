@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useEditReview } from "../../hooks/review";
 import { Form, Modal } from "antd";
 import ReviewReplyInputs from "./ReviewReplyInputs";
@@ -23,6 +23,8 @@ const AddReplyModal: React.FC<IProps> = ({ review, isOpen, onClose }) => {
     editReview(editedReview);
     onClose();
   };
+
+  useEffect(() => setEditedReview(review), [review]);
 
   return (
     <Modal
