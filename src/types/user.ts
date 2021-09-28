@@ -2,7 +2,7 @@ export interface IUser {
     id: string;
     email: string;
     name: string;
-    profilePhotoId: string;
-    isAdmin: boolean;
+    profilePhotoUrl: string;
+    type: 'Admin' | 'Owner' | 'Regular';
     isRestaurantOwner: boolean;
 }

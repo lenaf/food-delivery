@@ -26,9 +26,9 @@ const RestaurantInputs: React.FC<IProps> = ({
         </Col>
       </Row>
       <PhotoUpload
-        photoId={restaurant.profilePhotoId}
-        onUpload={(profilePhotoId) =>
-          updateRestaurant({ ...restaurant, profilePhotoId })
+        url={restaurant.profilePhotoUrl}
+        onUpload={(profilePhotoUrl) =>
+          updateRestaurant({ ...restaurant, profilePhotoUrl })
         }
       />
       <Input

@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import { Card, Rate, Button } from "antd";
-import {
-  useEditRestaurant,
-  useFetchRestaurantById,
-  useFetchRestaurantReviews,
-  useGetPhotoUrl,
-} from "../hooks";
+import { Rate, Button } from "antd";
+import { useFetchRestaurantById, useFetchRestaurantReviews } from "../hooks";
 import { useParams } from "react-router-dom";
 import AddReviewModal from "./AddReviewModal";
-import { useEffect } from "react";
-import { IReview } from "../types/review";
-import RestaurantCard from "./RestaurantCard";
+import EditRestaurantModal from "./EditRestaurantModal";
 
 const RestaurantPage: React.FC = () => {
   let { restaurantId } = useParams<{ restaurantId: string }>();
@@ -18,44 +11,44 @@ const RestaurantPage: React.FC = () => {
     useFetchRestaurantReviews(restaurantId);
 
   const [showAddReview, setShowAddReview] = useState(false);
+  const [showEditRestaurant, setShowEditRestaurant] = useState(false);
 
   const { restaurant, loading } = useFetchRestaurantById(restaurantId);
-  const { url } = useGetPhotoUrl(restaurant?.profilePhotoId ?? "");
-  const editRestaurant = useEditRestaurant();
-
-  console.log(restaurant);
-
-  useEffect(() => {
-    const sumOfReviewScores = reviews.reduce(
-      (sum: number, review: IReview) => sum + review.score,
-      0
-    );
-
-    if (restaurant) {
-      editRestaurant({
-        ...restaurant,
-        averageScore: sumOfReviewScores / reviews.length,
-        numberOfReviews: reviews.length,
-      });
-    }
-  }, [reviews]);
 
   return (
     <div>
-      <Card
-        className="w-60 h-80"
-        cover={<img alt="example" src={url} className="h-40 " />}
-      >
-        <Card.Meta title={restaurant?.name} />
-
-        {restaurant && (
-          <Rate disabled defaultValue={restaurant?.averageScore ?? 0} />
-        )}
-        <p>{restaurant?.description}</p>
-      </Card>
-      <Button type="primary" onClick={() => setShowAddReview(true)}>
-        Add Review
+      <div className="p-relative h-48 w-100">
+        <img
+          object-fit="contain"
+          alt="example"
+          src={restaurant?.profilePhotoUrl}
+        />
+      </div>
+      {restaurant?.name}
+      {restaurant && (
+        <Rate value={restaurant?.averageScore ?? 0} allowHalf disabled={true} />
+      )}
+      {restaurant?.averageScore}
+      {restaurant?.numberOfReviews}
+      <p>{restaurant?.description}</p>
+      <Button type="primary" onClick={() => setShowEditRestaurant(true)}>
+        Edit
       </Button>
+      <div>
+        <Button type="primary" onClick={() => setShowAddReview(true)}>
+          Add Review
+        </Button>
+      </div>
+      {reviews.map((review) => (
+        <div>{review.text}</div>
+      ))}
+      {restaurant && (
+        <EditRestaurantModal
+          restaurant={restaurant}
+          isOpen={showEditRestaurant}
+          onClose={() => setShowEditRestaurant(false)}
+        />
+      )}
       {restaurant && (
         <AddReviewModal
           isOpen={showAddReview}

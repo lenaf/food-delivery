@@ -4,13 +4,15 @@ import firebase from "firebase";
 import withFirebaseAuth, {
   WrappedComponentProps,
 } from "react-with-firebase-auth";
-import { Layout } from "antd";
+import { Layout, Spin } from "antd";
 import Home from "./components/Home";
 import AccountPage from "./components/AccountPage";
+import Welcome from "./components/Welcome";
 import RestaurantPage from "./components/RestaurantPage";
 import TopNav from "./components/TopNav";
 import LoggedOut from "./components/LoggedOut";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useFetchUser } from "./hooks";
 
 const firebaseApp = firebase.initializeApp({
   apiKey: "AIzaSyBy3Y5w0kfsAp12rfG_XXA6CHhe80TjYrg",
@@ -28,30 +30,49 @@ export const providers = {
 };
 
 const App: React.ComponentType<object & WrappedComponentProps> = ({
-  user,
+  user: firebaseUser,
   signOut,
   signInWithGoogle,
-}) => (
-  <Router>
-    <div className="App">
-      <TopNav user={user} signOut={signOut} />
-      <Layout.Content className="h-screen p-8 bg-gray-50">
-        {user ? (
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/account" component={AccountPage} />
-            <Route
-              path="/restaurant/:restaurantId"
-              component={RestaurantPage}
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  error,
+  loading,
+}) => {
+  const { user, loading: fetchUserLoading } = useFetchUser(
+    firebaseUser?.uid ?? ""
+  );
+  return (
+    <Router>
+      <div className="App">
+        <TopNav user={user} signOut={signOut} />
+        <Layout.Content className="h-screen p-8 bg-gray-50">
+          {user ? (
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route path="/account" component={AccountPage} />
+              <Route
+                path="/restaurant/:restaurantId"
+                component={RestaurantPage}
+              />
+            </Switch>
+          ) : fetchUserLoading ? (
+            <Spin />
+          ) : firebaseUser ? (
+            <Welcome firebaseUser={firebaseUser} />
+          ) : (
+            <LoggedOut
+              signInWithGoogle={signInWithGoogle}
+              createUserWithEmailAndPassword={createUserWithEmailAndPassword}
+              signInWithEmailAndPassword={signInWithEmailAndPassword}
+              error={error}
+              loading={loading}
             />
-          </Switch>
-        ) : (
-          <LoggedOut signInWithGoogle={signInWithGoogle} />
-        )}
-      </Layout.Content>
-    </div>
-  </Router>
-);
+          )}
+        </Layout.Content>
+      </div>
+    </Router>
+  );
+};
 
 export default withFirebaseAuth({
   providers,

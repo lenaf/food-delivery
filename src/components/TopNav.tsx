@@ -1,17 +1,24 @@
 import React from "react";
-import firebase from "firebase";
 import { Button, Row, Layout, Menu, Dropdown } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import { DownOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
+import { IUser } from "../types/user";
+import firebase from "firebase";
 
 interface IProps {
-  user?: firebase.User | null;
+  user?: IUser | null;
   signOut: () => void;
 }
 
 const TopNav: React.FC<IProps> = ({ user, signOut }) => {
   const history = useHistory();
+  let firebaseUser = firebase.auth().currentUser;
+
+  const handleSignout = () => {
+    signOut();
+    history.push("/");
+  };
   return (
     <Layout.Header className="bg-indigo-800 text-white">
       <Row align="middle" wrap={false} className="h-full">
@@ -38,7 +45,7 @@ const TopNav: React.FC<IProps> = ({ user, signOut }) => {
                   </Button>
                 </Menu.Item>
                 <Menu.Item className="flex" key="1">
-                  <Button onClick={signOut} className="mx-auto">
+                  <Button onClick={handleSignout} className="mx-auto">
                     Sign out
                   </Button>
                 </Menu.Item>
@@ -46,13 +53,16 @@ const TopNav: React.FC<IProps> = ({ user, signOut }) => {
             }
           >
             <Row align="middle" className="cursor-pointer ">
-              <Avatar src={user.photoURL} className="mr-2" />
-              <h1 className="items-center text-white mr-2">
-                {user.displayName}
-              </h1>
+              <Avatar src={user.profilePhotoUrl} className="mr-2" />
+              <h1 className="items-center text-white mr-2">{user.name}</h1>
               <DownOutlined color="white" />
             </Row>
           </Dropdown>
+        )}
+        {!user && firebaseUser && (
+          <Button onClick={handleSignout} className="ml-auto">
+            Sign out
+          </Button>
         )}
       </Row>
     </Layout.Header>

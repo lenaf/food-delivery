@@ -12,7 +12,7 @@ interface IProps {
   onClose: () => void;
 }
 
-const AddRestaurant: React.FC<IProps> = ({ restaurant, isOpen, onClose }) => {
+const AddReviewModal: React.FC<IProps> = ({ restaurant, isOpen, onClose }) => {
   let user = firebase.auth().currentUser;
   const reviewerId = user?.uid ?? "";
   const restaurantId = restaurant.id;
@@ -23,10 +23,14 @@ const AddRestaurant: React.FC<IProps> = ({ restaurant, isOpen, onClose }) => {
     restaurantId,
   });
 
-  const handleAddReview = () => {
-    addReview(newReview);
+  const handleClose = () => {
     updateNewReview({ reviewerId, restaurantId });
     onClose();
+  };
+
+  const handleAddReview = () => {
+    addReview(newReview);
+    handleClose();
   };
 
   return (
@@ -34,7 +38,7 @@ const AddRestaurant: React.FC<IProps> = ({ restaurant, isOpen, onClose }) => {
       title="Add Review"
       visible={isOpen}
       onOk={() => handleAddReview()}
-      onCancel={onClose}
+      onCancel={handleClose}
       okText="Add"
       cancelText="Cancel"
     >
@@ -45,4 +49,4 @@ const AddRestaurant: React.FC<IProps> = ({ restaurant, isOpen, onClose }) => {
   );
 };
 
-export default AddRestaurant;
+export default AddReviewModal;

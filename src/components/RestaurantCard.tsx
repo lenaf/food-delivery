@@ -1,13 +1,11 @@
 import React from "react";
 import { Card, Rate } from "antd";
 import { IRestaurant } from "../types/restaurant";
-import { useGetPhotoUrl } from "../hooks";
 import { useHistory } from "react-router-dom";
 
 const RestaurantCard: React.FC<{ restaurant: IRestaurant }> = ({
   restaurant: restaurant,
 }) => {
-  const { url } = useGetPhotoUrl(restaurant.profilePhotoId);
   let history = useHistory();
 
   return (
@@ -17,7 +15,7 @@ const RestaurantCard: React.FC<{ restaurant: IRestaurant }> = ({
         <img
           onClick={() => history.push(`/restaurant/${restaurant.id}`)}
           alt="example"
-          src={url}
+          src={restaurant.profilePhotoUrl}
           className="h-40 cursor-pointer"
         />
       }

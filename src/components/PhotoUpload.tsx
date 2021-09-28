@@ -2,17 +2,15 @@ import { Upload } from "antd";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import React from "react";
 import { useState } from "react";
-import { useGetPhotoUrl } from "../hooks";
 import { v4 as uuidv4 } from "uuid";
 import firebase from "firebase";
 
 interface IProps {
-  photoId?: string;
-  onUpload: (photoId: string) => void;
+  url?: string;
+  onUpload: (uploadedUrl: string) => void;
 }
 
-const PhotoUpload: React.FC<IProps> = ({ photoId, onUpload }) => {
-  const { url, loading: photoLoading } = useGetPhotoUrl(photoId ?? "");
+const PhotoUpload: React.FC<IProps> = ({ url, onUpload }) => {
   const [loading, setLoading] = useState(false);
   return (
     <Upload
@@ -29,13 +27,19 @@ const PhotoUpload: React.FC<IProps> = ({ photoId, onUpload }) => {
             .child(uuidv4())
             .put(info.file.originFileObj)
             .then((snapshot) => {
-              onUpload(snapshot.metadata.fullPath);
-              setLoading(false);
+              firebase
+                .storage()
+                .ref(snapshot.metadata.fullPath)
+                .getDownloadURL()
+                .then((uploadedUrl) => {
+                  onUpload(uploadedUrl);
+                  setLoading(false);
+                });
             });
         }
       }}
     >
-      {loading || photoLoading ? (
+      {loading ? (
         <LoadingOutlined />
       ) : url ? (
         <img src={url} alt="avatar" style={{ width: "100%" }} />
