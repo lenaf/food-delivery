@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import firebase from "firebase";
 import { Form, Modal } from "antd";
-import { useAddReview } from "../hooks";
-import { IReviewInput } from "../types/review";
-import { IRestaurant } from "../types/restaurant";
+import { useAddReview } from "../../hooks/review";
+import { IReviewInput } from "../../types/review";
+import { IRestaurant } from "../../types/restaurant";
 import ReviewInputs from "./ReviewInputs";
 
 interface IProps {
@@ -41,6 +41,7 @@ const AddReviewModal: React.FC<IProps> = ({ restaurant, isOpen, onClose }) => {
       onCancel={handleClose}
       okText="Add"
       cancelText="Cancel"
+      okButtonProps={{ disabled: !newReview.date || !newReview.score }}
     >
       <Form onFinish={handleAddReview}>
         <ReviewInputs review={newReview} updateReview={updateNewReview} />

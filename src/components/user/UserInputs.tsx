@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Input, Col, Radio } from "antd";
-import { IUser } from "../types/user";
-import PhotoUpload from "./PhotoUpload";
+import { IUser } from "../../types/user";
+import PhotoUpload from "../shared/PhotoUpload";
 
 interface IProps {
   user: IUser;

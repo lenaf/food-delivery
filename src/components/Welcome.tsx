@@ -1,10 +1,10 @@
 import React from "react";
 import firebase from "firebase";
 import { useState } from "react";
-import UserInputs from "./UserInputs";
+import UserInputs from "./user/UserInputs";
 import { IUser } from "../types/user";
 import { Card, Button, Row } from "antd";
-import { useAddUser } from "../hooks";
+import { useAddUser } from "../hooks/user";
 
 interface IProps {
   firebaseUser: firebase.User;

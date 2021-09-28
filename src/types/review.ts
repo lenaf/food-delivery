@@ -7,6 +7,8 @@ export interface IReview {
     reviewer: IUser;
     text: string;
     score: number;
+    date: string;
+    reply?: string;
 }
 
 export interface IReviewInput {
@@ -15,4 +17,5 @@ export interface IReviewInput {
     reviewer?: IUser;
     text?: string;
     score?: number;
+    date?: string;
 }

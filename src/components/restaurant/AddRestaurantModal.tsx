@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import firebase from "firebase";
 import { Form, Modal } from "antd";
 import RestaurantInputs from "./RestaurantInputs";
-import { IRestaurantInput } from "../types/restaurant";
-import { useAddRestaurant } from "../hooks";
+import { IRestaurantInput } from "../../types/restaurant";
+import { useAddRestaurant } from "../../hooks/restaurant";
 
 interface IProps {
   isOpen: boolean;
@@ -37,6 +37,7 @@ const AddRestaurantModal: React.FC<IProps> = ({ isOpen, onClose }) => {
       onCancel={handleClose}
       okText="Add"
       cancelText="Cancel"
+      okButtonProps={{ disabled: !newRestaurant.name }}
     >
       <Form onFinish={handleAddRestaurant}>
         <RestaurantInputs

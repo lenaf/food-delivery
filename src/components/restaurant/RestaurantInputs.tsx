@@ -1,7 +1,7 @@
 import React from "react";
 import { Row, Input, Col } from "antd";
-import { IRestaurant, IRestaurantInput } from "../types/restaurant";
-import PhotoUpload from "./PhotoUpload";
+import { IRestaurant, IRestaurantInput } from "../../types/restaurant";
+import PhotoUpload from "../shared/PhotoUpload";
 
 interface IProps {
   restaurant: IRestaurant | IRestaurantInput;

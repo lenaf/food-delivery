@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useEditRestaurant } from "../hooks";
+import { useEditRestaurant } from "../../hooks/restaurant";
 import { Form, Modal } from "antd";
-import { IRestaurant } from "../types/restaurant";
+import { IRestaurant } from "../../types/restaurant";
 import RestaurantInputs from "./RestaurantInputs";
 
 interface IProps {
@@ -31,8 +31,9 @@ const EditRestaurant: React.FC<IProps> = ({ restaurant, isOpen, onClose }) => {
       visible={isOpen}
       onOk={() => handleEditRestaurant()}
       onCancel={handleCancel}
-      okText="Edit"
+      okText="Save"
       cancelText="Cancel"
+      okButtonProps={{ disabled: !editedRestaurant.name }}
     >
       <Form
         onFinish={() => {

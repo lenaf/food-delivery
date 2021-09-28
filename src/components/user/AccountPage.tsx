@@ -1,6 +1,6 @@
 import React from "react";
 import firebase from "firebase";
-import { useFetchUser } from "../hooks";
+import { useEditUser, useFetchUser } from "../../hooks/user";
 import { Button, Card, Row } from "antd";
 import UserInputs from "./UserInputs";
 import { useState } from "react";
@@ -15,6 +15,8 @@ const AccountPage: React.FC = () => {
     setUser(savedUser);
   }, [savedUser]);
 
+  const editUser = useEditUser();
+
   return (
     <div>
       <Card>
@@ -22,7 +24,7 @@ const AccountPage: React.FC = () => {
         <Row>
           <Button
             className="mt-4 ml-auto"
-            // onClick={() => addUser(user)}
+            onClick={() => user && editUser(user)}
             type="primary"
             disabled={!user?.name || !user?.type}
           >
