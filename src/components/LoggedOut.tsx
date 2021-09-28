@@ -24,7 +24,7 @@ const LoggedOut: React.FC<IProps> = ({
   return (
     <div className="flex h-full">
       <div className="mx-auto">
-        <h1 className="mb-8 text-8xl font-bold	">Lets Find Some Food</h1>
+        <h1 className="mb-8 text-8xl font-bold	">Let's Find Some Food</h1>
         <Row className="mb-2">
           <Input
             value={email}

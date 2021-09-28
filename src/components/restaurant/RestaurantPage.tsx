@@ -32,57 +32,61 @@ const RestaurantPage: React.FC = () => {
 
   return (
     <div>
-      <img
-        object-fit="cover"
-        className="h-60 w-90 mb-4"
-        alt="restaurant profile"
-        src={restaurant?.profilePhotoUrl ?? empty}
-      />
-      <Row>
-        <h3 className={"font-bold text-3xl mr-2"}>{restaurant?.name}</h3>
-        {canEditOrDeleteRestaurant && (
-          <Tooltip title="Edit" className="mr-2">
-            <Button shape="circle" onClick={() => setShowEditRestaurant(true)}>
-              <i className="fas fa-pen text-blue-500"></i>
-            </Button>
-          </Tooltip>
-        )}
-        {canEditOrDeleteRestaurant && (
-          <Tooltip title="Delete" className="mr-2">
-            <Button
-              shape="circle"
-              onClick={() => setShowDeleteRestaurant(true)}
-            >
-              <i className="fas fa-trash-alt text-blue-500"></i>
-            </Button>
-          </Tooltip>
-        )}
-      </Row>
-      {restaurant && (
-        <Rate
-          value={restaurant?.averageScore ?? 0}
-          allowHalf
-          disabled={true}
-          className="mr-2"
-        />
-      )}
-      {restaurant?.numberOfReviews} Reviews
-      {<div>Average: {(restaurant?.averageScore ?? 0).toFixed(2)}</div>}
-      <Divider />
       <Row gutter={8}>
-        {highestReview && (
-          <Col span={12} className="mb-4">
-            <h3 className="font-semi-bold text-xl">Highest Review</h3>
-            <ReviewCard review={highestReview} />
-          </Col>
-        )}
-        {lowestReview && (
-          <Col span={12} className="mb-4">
-            <h3 className="font-semi-bold text-xl">Lowest Review</h3>
-            <ReviewCard review={lowestReview} />
-          </Col>
-        )}
+        <Col span={12}>
+          <img
+            object-fit="cover"
+            className="h-60 w-90 mb-4"
+            alt="restaurant profile"
+            src={restaurant?.profilePhotoUrl ?? empty}
+          />
+          <Row>
+            <h3 className={"font-bold text-3xl mr-2"}>{restaurant?.name}</h3>
+            {canEditOrDeleteRestaurant && (
+              <Tooltip title="Edit" className="mr-2">
+                <Button
+                  shape="circle"
+                  onClick={() => setShowEditRestaurant(true)}
+                >
+                  <i className="fas fa-pen text-blue-500"></i>
+                </Button>
+              </Tooltip>
+            )}
+            {canEditOrDeleteRestaurant && (
+              <Tooltip title="Delete" className="mr-2">
+                <Button
+                  shape="circle"
+                  onClick={() => setShowDeleteRestaurant(true)}
+                >
+                  <i className="fas fa-trash-alt text-blue-500"></i>
+                </Button>
+              </Tooltip>
+            )}
+          </Row>
+          {restaurant && (
+            <Rate
+              value={restaurant?.averageScore ?? 0}
+              allowHalf
+              disabled={true}
+              className="mr-2"
+            />
+          )}
+          {restaurant?.numberOfReviews} Reviews
+          {<div>Average: {(restaurant?.averageScore ?? 0).toFixed(2)}</div>}
+        </Col>
+        <Col span={12}>
+          {reviews.length && (
+            <div>
+              <h3 className="font-bold mb-2">Highest Review</h3>
+              <ReviewCard className="mb-2" review={highestReview} />
+              <h3 className="font-bold mb-2">Lowest Review</h3>
+              <ReviewCard className="mb-2" review={lowestReview} />
+            </div>
+          )}
+        </Col>
       </Row>
+
+      <Divider />
       <Row align="middle" className="my-4">
         <h3 className={"font-semi-bold text-2xl mr-4"}>All Reviews</h3>
         <Button
@@ -94,7 +98,7 @@ const RestaurantPage: React.FC = () => {
         </Button>
       </Row>
       {reviewsByDate.map((review, i) => (
-        <ReviewCard key={i} review={review} />
+        <ReviewCard key={i} className="mb-2" review={review} />
       ))}
       {restaurant && (
         <EditRestaurantModal

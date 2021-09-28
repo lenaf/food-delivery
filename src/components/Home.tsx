@@ -17,7 +17,7 @@ const Home: React.FC = () => {
 
   return (
     <div>
-      <Row>
+      <Row className="mb-4">
         <div className="mr-4 ml-auto">
           <Select
             placeholder="Minimum Stars"
@@ -34,11 +34,7 @@ const Home: React.FC = () => {
           </Select>
         </div>
         {(user?.isAdmin || user?.isOwner) && (
-          <Button
-            type="primary"
-            className="mb-4 mr-4"
-            onClick={() => setShowAddRestaurant(true)}
-          >
+          <Button type="primary" onClick={() => setShowAddRestaurant(true)}>
             Add Restaurant
           </Button>
         )}

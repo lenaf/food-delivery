@@ -12,7 +12,8 @@ const RestaurantCard: React.FC<{ restaurant: IRestaurant }> = ({
   return (
     <Card
       onClick={() => history.push(`/restaurant/${restaurant.id}`)}
-      className="overflow-hidden cursor-pointer"
+      bordered={false}
+      className="rounded shadow-sm overflow-hidden cursor-pointer"
       cover={
         <img
           alt="restaurant profile"
@@ -20,8 +21,8 @@ const RestaurantCard: React.FC<{ restaurant: IRestaurant }> = ({
           className="w-100 "
           style={{
             display: "block",
-            maxWidth: "280px",
-            maxHeight: "160px",
+            maxWidth: "290px",
+            maxHeight: "180px",
             width: "auto",
             height: "auto",
           }}

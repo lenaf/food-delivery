@@ -10,7 +10,7 @@ const UserCard: React.FC<{ user: IUser }> = ({ user }) => {
   const [showDeleteUser, setShowDeleteUser] = useState(false);
   return (
     <div>
-      <Card>
+      <Card bordered={false} className="rounded shadow-sm ">
         <Row>
           <Avatar
             src={user.profilePhotoUrl}

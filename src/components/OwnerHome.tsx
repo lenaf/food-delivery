@@ -26,7 +26,9 @@ const OwnerHome: React.FC = () => {
         onClose={() => setShowAddRestaurant(false)}
       />
       {restaurants.map((r, i) => (
-        <OwnerRestaurantCard key={i} restaurant={r} />
+        <div className="mb-4" key={i}>
+          <OwnerRestaurantCard restaurant={r} />
+        </div>
       ))}
     </div>
   );

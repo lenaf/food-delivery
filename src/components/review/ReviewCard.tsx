@@ -7,15 +7,18 @@ import EditReviewModal from "./EditReviewModal";
 import DeleteReviewModal from "./DeleteReviewModal";
 import AddReplyModal from "./AddReplyModal";
 
-const ReviewCard: React.FC<{ review: IReview }> = ({ review }) => {
+const ReviewCard: React.FC<{ review: IReview; className?: string }> = ({
+  review,
+  className,
+}) => {
   const { user } = useFetchCurrentUser();
   const [showEditReview, setShowEditReview] = useState(false);
   const [showDeleteReview, setShowDeleteReview] = useState(false);
   const [showReply, setShowReply] = useState(false);
 
   return (
-    <div>
-      <Card>
+    <>
+      <Card bordered={false} className={`${className} rounded shadow-sm`}>
         <Row align="middle">
           <Avatar src={review.reviewer?.profilePhotoUrl} className="mr-2" />
           <h4 className="font-bold">{review.reviewer?.name ?? "Unknown"}</h4>
@@ -68,7 +71,7 @@ const ReviewCard: React.FC<{ review: IReview }> = ({ review }) => {
         isOpen={showDeleteReview}
         onClose={() => setShowDeleteReview(false)}
       />
-    </div>
+    </>
   );
 };
 
