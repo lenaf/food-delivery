@@ -11,13 +11,13 @@ const RestaurantCard: React.FC<{ restaurant: IRestaurant }> = ({
 
   return (
     <Card
-      className="overflow-hidden"
+      onClick={() => history.push(`/restaurant/${restaurant.id}`)}
+      className="overflow-hidden cursor-pointer"
       cover={
         <img
-          onClick={() => history.push(`/restaurant/${restaurant.id}`)}
           alt="restaurant profile"
           src={restaurant.profilePhotoUrl ?? empty}
-          className="w-100 cursor-pointer"
+          className="w-100 "
           style={{
             display: "block",
             maxWidth: "280px",
@@ -28,7 +28,7 @@ const RestaurantCard: React.FC<{ restaurant: IRestaurant }> = ({
         />
       }
     >
-      <Card.Meta className="cursor-pointer" title={restaurant.name} />
+      <Card.Meta title={restaurant.name} />
       <Rate disabled value={restaurant.averageScore} />
     </Card>
   );

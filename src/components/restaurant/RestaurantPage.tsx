@@ -67,7 +67,7 @@ const RestaurantPage: React.FC = () => {
         />
       )}
       {restaurant?.numberOfReviews} Reviews
-      {<div>Average: {restaurant?.averageScore.toFixed(2)}</div>}
+      {<div>Average: {(restaurant?.averageScore ?? 0).toFixed(2)}</div>}
       <Divider />
       <Row gutter={8}>
         {highestReview && (

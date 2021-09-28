@@ -32,7 +32,12 @@ const OwnerRestaurantCard: React.FC<{ restaurant: IRestaurant }> = ({
         />
       }
     >
-      <h2 className="cursor-pointer font-bold text-3xl">{restaurant.name}</h2>
+      <h2
+        onClick={() => history.push(`/restaurant/${restaurant.id}`)}
+        className="cursor-pointer font-bold text-3xl"
+      >
+        {restaurant.name}
+      </h2>
       <Rate disabled value={restaurant.averageScore} className="mb-4" />
       <h3 className={"font-bold text-xl"}>
         {unansweredReviews.length} Unanswered Reviews
